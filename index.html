@@ -1,0 +1,254 @@
+<title>TurboRoute Wx</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap">
+
+<style>
+:root {
+  --bg:       #0d1117;
+  --surface:  #161b22;
+  --border:   #21262d;
+  --fg:       #e6edf3;
+  --muted:    #8b949e;
+  --accent:   #39d0c8;
+  --accent2:  #1a7a76;
+  --danger:   #f85149;
+  --warn:     #d29922;
+  --good:     #3fb950;
+  color-scheme: dark;
+  --mono: "IBM Plex Mono", "Menlo", monospace;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:      #f6f8fa; --surface: #ffffff; --border: #d0d7de;
+    --fg:      #1f2328; --muted:   #57606a; --accent: #0d7a76;
+    --accent2: #c8f0ee; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f6f8fa; --surface: #ffffff; --border: #d0d7de;
+  --fg: #1f2328; --muted:   #57606a; --accent: #0d7a76;
+  --accent2: #c8f0ee; color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans); background: var(--bg); color: var(--fg);
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-block: 20px; border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 0.95rem; font-weight: 600;
+  color: var(--fg); text-decoration: none; letter-spacing: 0.03em;
+}
+.brand-mark {
+  width: 32px; height: 32px; border-radius: 8px; background: var(--accent);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.brand-mark svg { display: block; }
+.nav-badge {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 4px;
+  padding: 2px 8px; letter-spacing: 0.05em;
+}
+.hero { padding-block: 72px 56px; max-width: 640px; }
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 0.75rem; color: var(--accent);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px;
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300;
+  line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance;
+  margin-bottom: 24px; color: var(--fg);
+}
+h1 strong { font-weight: 600; color: var(--accent); }
+.hero-desc {
+  font-size: 1.05rem; color: var(--muted); max-width: 540px;
+  margin-bottom: 36px; line-height: 1.7;
+}
+.cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #0d1117; font-family: var(--sans);
+  font-weight: 600; font-size: 0.9rem; padding: 11px 22px;
+  border-radius: 8px; text-decoration: none; letter-spacing: 0.01em;
+  transition: opacity 0.15s;
+}
+.btn-primary:hover { opacity: 0.85; }
+.app-store-note { font-size: 0.82rem; color: var(--muted); font-family: var(--mono); }
+.data-strip {
+  display: flex; border: 1px solid var(--border); border-radius: 10px;
+  overflow: hidden; margin-block: 56px; flex-wrap: wrap;
+}
+.data-cell {
+  flex: 1; min-width: 140px; padding: 20px 24px;
+  border-right: 1px solid var(--border);
+}
+.data-cell:last-child { border-right: none; }
+.data-label {
+  font-family: var(--mono); font-size: 0.68rem; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
+}
+.data-value {
+  font-family: var(--mono); font-size: 1.1rem; font-weight: 600;
+  color: var(--fg); font-variant-numeric: tabular-nums;
+}
+.data-value.good { color: var(--good); }
+.data-value.muted { color: var(--muted); }
+.section-label {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 28px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.feature-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin-bottom: 64px;
+}
+.feature-card { background: var(--surface); padding: 24px; }
+.feature-icon {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+  letter-spacing: 0.08em; margin-bottom: 10px; text-transform: uppercase;
+}
+.feature-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; color: var(--fg); }
+.feature-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+.phases { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 64px; }
+@media (max-width: 520px) { .phases { grid-template-columns: 1fr; } }
+.phase-card {
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 24px; background: var(--surface);
+}
+.phase-num {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;
+}
+.phase-title { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+.phase-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+.support-block {
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 32px; background: var(--surface); margin-bottom: 64px;
+}
+.support-block h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; }
+.support-block p { font-size: 0.9rem; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+.contact-row {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 0.85rem; color: var(--fg);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 7px; padding: 12px 16px;
+}
+.contact-label {
+  color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em;
+  text-transform: uppercase; flex-shrink: 0;
+}
+footer {
+  border-top: 1px solid var(--border); padding-block: 24px;
+  font-size: 0.8rem; color: var(--muted); font-family: var(--mono);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+</style>
+
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="brand-mark">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M9 2L16 14H2L9 2Z" fill="#0d1117" stroke="#0d1117" stroke-width="0.5"/>
+        <path d="M9 5L14 13H4L9 5Z" fill="#39d0c8" opacity="0.7"/>
+        <line x1="4" y1="11" x2="14" y2="11" stroke="#0d1117" stroke-width="1.2"/>
+      </svg>
+    </div>
+    TurboRoute Wx
+  </a>
+  <span class="nav-badge">iOS</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Turbulence analysis for GA pilots</div>
+  <h1>Know the air before you<br><strong>leave the ground.</strong></h1>
+  <p class="hero-desc">TurboRoute Wx combines NWP forecast models, live PIREPs, AIRMETs, and upper-air soundings into a single turbulence picture for your route — with a plain-language AI briefing and a nav log ready before you go.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="https://apps.apple.com/app/turboroute-wx" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M11.182 1C10.08 1 9.1 1.636 8.5 1.636S6.92 1 5.818 1C3.636 1 2 2.818 2 5.273c0 3.272 2.727 7.636 4.545 7.636.546 0 1-.364 1.955-.364.954 0 1.363.364 1.954.364C12.273 12.909 15 8.545 15 5.273 15 2.818 13.364 1 11.182 1zM9.09 3.273C9.636 2.636 10.09 2 11.09 2c.09.818-.182 1.636-.636 2.273-.455.636-1.091 1.09-1.819 1.09-.09-.817.273-1.635.455-2.09z"/></svg>
+      Download on the App Store
+    </a>
+    <span class="app-store-note">Free · No subscription · No login</span>
+  </div>
+</div>
+
+<div class="data-strip">
+  <div class="data-cell"><div class="data-label">Sources</div><div class="data-value">6+</div></div>
+  <div class="data-cell"><div class="data-label">Phase 1 latency</div><div class="data-value good">&lt; 10 s</div></div>
+  <div class="data-cell"><div class="data-label">Altitude bands</div><div class="data-value">6</div></div>
+  <div class="data-cell"><div class="data-label">PIREP window</div><div class="data-value muted">3 hr</div></div>
+</div>
+
+<div class="section-label">What you get</div>
+
+<div class="feature-grid">
+  <div class="feature-card">
+    <div class="feature-icon">GTG · Skew-T</div>
+    <div class="feature-title">Composite turbulence grid</div>
+    <div class="feature-desc">NWP wind-shear forecasts and upper-air sounding indices combined across 6 altitude bands from 3,500 to 17,500 ft.</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">PIREPs</div>
+    <div class="feature-title">Live pilot reports</div>
+    <div class="feature-desc">Filtered to within 50 nm of your route. Only the last 3 hours. Intensity, altitude, and aircraft type for each report.</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">G-AIRMET</div>
+    <div class="feature-title">Active AIRMETs</div>
+    <div class="feature-desc">Current NWS Graphical AIRMETs for turbulence, overlaid on your analysis and factored into the composite score.</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">AI · Claude</div>
+    <div class="feature-title">Plain-language briefing</div>
+    <div class="feature-desc">A 2–4 sentence summary of conditions, a specific altitude recommendation, and the reason — in pilot language, no jargon.</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">Nav log</div>
+    <div class="feature-title">Magnetic headings &amp; winds</div>
+    <div class="feature-desc">Leg-by-leg magnetic course, distance, and headwind / tailwind component at cruise altitude before you even request analysis.</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">Terrain</div>
+    <div class="feature-title">Mechanical turbulence</div>
+    <div class="feature-desc">Terrain elevation and surface wind assessed at each leg to flag potential mechanical turbulence below your planned altitude.</div>
+  </div>
+</div>
+
+<div class="section-label">How it works</div>
+
+<div class="phases">
+  <div class="phase-card">
+    <div class="phase-num">Phase 1 · seconds</div>
+    <div class="phase-title">Instant picture</div>
+    <div class="phase-desc">GTG wind-shear forecast, PIREPs, AIRMETs, skew-T sounding indices, SPC outlook, and terrain data all fetched concurrently. Results appear in under 10 seconds.</div>
+  </div>
+  <div class="phase-card">
+    <div class="phase-num">Phase 2 · background</div>
+    <div class="phase-title">ADS-B + AI summary</div>
+    <div class="phase-desc">While you review Phase 1, TurboRoute collects 28 seconds of live ADS-B track data and generates your AI briefing. The grid updates automatically when both are ready.</div>
+  </div>
+</div>
+
+<div class="section-label">Support</div>
+
+<div class="support-block">
+  <h2>Questions or feedback?</h2>
+  <p>TurboRoute Wx is built by a GA pilot for GA pilots. If something isn't working or you have a suggestion, reach out directly.</p>
+  <div class="contact-row">
+    <span class="contact-label">Email</span>
+    dsiegel@smith.edu
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 Donald Siegel</span>
+  <span>TurboRoute Wx · iOS</span>
+</footer>
